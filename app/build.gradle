@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -41,6 +42,7 @@ android {
 
 ext{
     nav_version = "2.3.5"
+    lottieVersion = "3.4.0"
 }
 
 dependencies {
@@ -60,5 +62,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    //Lottie
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

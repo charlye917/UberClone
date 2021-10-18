@@ -2,6 +2,8 @@ package com.charlye934.uber.login.presentation.fragment
 
 import android.annotation.SuppressLint
 import android.app.ActionBar
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater

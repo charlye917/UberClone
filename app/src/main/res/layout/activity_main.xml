@@ -16,6 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:title="@string/app_name"
             android:theme="?attr/actionBarTheme"
             app:titleTextColor="@color/colorWhite"
             android:minHeight="?attr/actionBarSize"/>

@@ -1,6 +1,7 @@
 package com.charlye934.uber.utils
 
 import android.content.Context
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
@@ -8,11 +9,13 @@ import java.util.regex.Pattern
 
 fun isValidateEmail(email: String, inputLayout: TextInputLayout? = null): Boolean{
     val pattern = Patterns.EMAIL_ADDRESS
+    Log.d("__tag"," $email ${pattern}")
+
     return if(pattern.matcher(email).matches()){
-        inputLayout!!.error = null
+        inputLayout?.error = null
         true
     }else{
-        inputLayout!!.error = "FAVOR DE INGRESAR UN EMAIL VALIDO"
+        inputLayout?.error = "FAVOR DE INGRESAR UN EMAIL VALIDO"
         false
     }
 }

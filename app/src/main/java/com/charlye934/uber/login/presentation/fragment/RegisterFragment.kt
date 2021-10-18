@@ -1,5 +1,6 @@
 package com.charlye934.uber.login.presentation.fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -52,5 +53,4 @@ class RegisterFragment : Fragment() {
                 }
             }
     }
-
 }
