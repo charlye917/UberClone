@@ -10,17 +10,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.charlye934.uber.R
 import com.charlye934.uber.databinding.FragmentLoginBinding
-import com.charlye934.uber.utils.FirebaseInstances
 import com.charlye934.uber.utils.isValidateEmail
 import com.charlye934.uber.utils.isValidatePassword
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Api
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
