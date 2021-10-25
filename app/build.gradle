@@ -42,7 +42,8 @@ android {
 
 ext{
     nav_version = "2.3.5"
-    lottieVersion = "3.4.0"
+    lottie_version = "3.4.0"
+    security_version = "1.0.0"
 }
 
 dependencies {
@@ -66,5 +67,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     //Lottie
-    implementation "com.airbnb.android:lottie:$lottieVersion"
+    implementation "com.airbnb.android:lottie:$lottie_version"
+    //Encrypted
+    implementation "androidx.security:security-crypto:$security_version"
 }

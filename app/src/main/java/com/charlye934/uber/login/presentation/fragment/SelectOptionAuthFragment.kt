@@ -22,6 +22,9 @@ class SelectOptionAuthFragment : Fragment() {
     private lateinit var binding: FragmentSelectOptionAuthBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        //setHasOptionsMenu(true)
+
         binding = FragmentSelectOptionAuthBinding.inflate(layoutInflater)
         return binding.root
     }

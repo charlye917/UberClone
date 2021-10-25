@@ -12,14 +12,13 @@ import com.charlye934.uber.databinding.FragmentProfilingBinding
 import com.charlye934.uber.databinding.FragmentSelectOptionAuthBinding
 import com.charlye934.uber.login.presentation.navigator.UberLoginNavigateImp
 import com.charlye934.uber.login.presentation.navigator.UberLoginNavigation
+import com.charlye934.uber.utils.EncryptSharedPreferences
 
 class ProfilingFragment : Fragment() {
 
     private lateinit var navigate: UberLoginNavigation
     private lateinit var binding: FragmentProfilingBinding
-    private lateinit var mPref: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
-
+    private lateinit var sharedPreferences: EncryptSharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,20 +30,18 @@ class ProfilingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mPref = requireContext().getSharedPreferences("typeUser", Context.MODE_PRIVATE)
-        editor = mPref.edit()
-
+        sharedPreferences = EncryptSharedPreferences(requireContext())
         navigate = UberLoginNavigateImp(view)
         setOnclickListener()
     }
 
     private fun setOnclickListener(){
         binding.btnIAmClient.setOnClickListener {
-            editor.putString("user", "client").apply()
+            sharedPreferences.setData("CLIENT")
             navigate.navigateToSelectAuth()
         }
         binding.btnIAmDriver.setOnClickListener {
-            editor.putString("user", "driver").apply()
+            sharedPreferences.setData("DRIVER")
             navigate.navigateToSelectAuth()
         }
     }

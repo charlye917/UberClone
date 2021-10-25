@@ -20,6 +20,7 @@
             android:theme="?attr/actionBarTheme"
             app:titleTextColor="@color/colorWhite"
             android:minHeight="?attr/actionBarSize"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView

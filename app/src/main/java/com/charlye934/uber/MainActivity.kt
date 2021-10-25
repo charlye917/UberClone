@@ -19,9 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         setUpToolbar()
     }
 
@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
 
         setSupportActionBar(binding.toolbar)
+        binding.toolbar.apply{
+            setupWithNavController(navController)
+            setTitle("UBER CLONE")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
