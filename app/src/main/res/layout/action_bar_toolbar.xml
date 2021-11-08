@@ -9,8 +9,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/actionBarTheme"
-        app:title="@string/app_name"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="@color/colorWhite"
-        android:minHeight="?attr/actionBarSize"/>
+        android:minHeight="?attr/actionBarSize" />
 </com.google.android.material.appbar.AppBarLayout>

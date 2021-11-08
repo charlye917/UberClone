@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_driver_navigation"
+    app:startDestination="@id/mapDriverFragment">
+
+    <fragment
+        android:id="@+id/mapDriverFragment"
+        android:name="com.charlye934.uber.home.presentation.ui.driver.MapDriverFragment"
+        android:label="fragment_map_driver"
+        tools:layout="@layout/fragment_map_driver" />
+</navigation>

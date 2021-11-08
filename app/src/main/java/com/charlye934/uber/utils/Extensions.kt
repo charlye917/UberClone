@@ -5,6 +5,7 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import java.util.regex.Pattern
 
 fun isValidateEmail(email: String, inputLayout: TextInputLayout? = null): Boolean{
@@ -37,6 +38,16 @@ fun isValidConfirmPassword(password: String, confirmPassword: String, context: C
     return if( password == confirmPassword) true
     else{
         Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+        false
+    }
+}
+
+fun validateDataNotEmpty(data: String, inputLayout: TextInputLayout? = null): Boolean{
+    return if(data.isNotEmpty()){
+        inputLayout!!.error = null
+        true
+    }else{
+        inputLayout!!.error = "FAVOR DE LLENAR LOS CAMPOS"
         false
     }
 }

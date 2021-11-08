@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_client_navigation"
+    app:startDestination="@id/mapClientFragment">
+    <fragment
+        android:id="@+id/mapClientFragment"
+        android:name="com.charlye934.uber.home.presentation.ui.client.MapClientFragment"
+        android:label="fragment_map_client"
+        tools:layout="@layout/fragment_map_client" />
+</navigation>

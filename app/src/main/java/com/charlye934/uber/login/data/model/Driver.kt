@@ -6,5 +6,5 @@ data class Driver(
     val email: String,
     val vehicleBrand: String,
     val vehiclePlate:String,
-    val image: String
+    val image: String = ""
 )

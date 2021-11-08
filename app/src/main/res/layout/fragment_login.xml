@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".login.presentation.fragment.LoginFragment">
 
     <LinearLayout
+        android:id="@+id/layoutTexts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
             android:src="@drawable/helmet" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -55,30 +53,38 @@
                 android:hint="Contraseña"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnIngresar"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
-                android:text="Ingresar"
-                android:textColor="@color/colorWhite" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/btnLoginGoogle"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"/>
-        </LinearLayout>
-
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutTexts"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+
+        <Button
+            android:id="@+id/btnIngresar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:text="Ingresar"
+            android:textColor="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Registrar" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btnLoginGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+</LinearLayout>

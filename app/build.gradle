@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -42,7 +43,7 @@ android {
 
 ext{
     nav_version = "2.3.5"
-    lottie_version = "3.4.0"
+    lottie_version = "4.2.0"
     security_version = "1.0.0"
 }
 
@@ -70,4 +71,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottie_version"
     //Encrypted
     implementation "androidx.security:security-crypto:$security_version"
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }
