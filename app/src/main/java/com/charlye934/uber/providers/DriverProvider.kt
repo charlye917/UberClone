@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 object DriverProvider {
-    val mDatabase = FirebaseDatabase.getInstance().reference.child("Users").child("Driver")
+    val mDatabase = FirebaseDatabase.getInstance().reference.child("Users").child("driver_working")
 
     fun create(driver: Driver): Task<Void>{
         return mDatabase.child(driver.id).setValue(driver)
