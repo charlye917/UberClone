@@ -3,6 +3,8 @@ package com.charlye934.uber.home.presentation.ui.client
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -16,12 +18,21 @@ import com.charlye934.uber.providers.GeoFireProvider
 import com.charlye934.uber.utils.SettingsLocations
 import com.firebase.geofire.GeoLocation
 import com.firebase.geofire.GeoQueryEventListener
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.database.DatabaseError
+import java.util.*
+import kotlin.Exception
 
 class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
 
@@ -37,11 +48,19 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
     private lateinit var binding: FragmentMapClientBinding
     private lateinit var settingsLocations: SettingsLocations
 
-    private var mIsFirstTime = true
+    private lateinit var mAutoCompleteOrigin: AutocompleteSupportFragment
+    private lateinit var mAutoCompleteDestination: AutocompleteSupportFragment
+    private lateinit var mPlaces: PlacesClient
 
-    companion object{
-        private const val LOCATION_REQUEST_CODE = 1
-    }
+    private lateinit var mOrigin: String
+    private lateinit var mOriginLatLng: LatLng
+
+    private lateinit var mDestination: String
+    private lateinit var mDestinationLatLng: LatLng
+
+    private lateinit var mCameraListener: GoogleMap.OnCameraIdleListener
+
+    private var mIsFirstTime = true
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -61,11 +80,83 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
         super.onViewCreated(view, savedInstanceState)
 
         askForPermissions()
+        inicialicePlaces()
     }
 
     private fun askForPermissions(){
         settingsLocations = SettingsLocations(this)
         settingsLocations.runWithPermission { startConnection() }
+    }
+
+    private fun inicialicePlaces(){
+        if(!Places.isInitialized())
+            Places.initialize(requireContext(), resources.getString(R.string.google_api_key))
+
+        mPlaces = Places.createClient(requireContext())
+        instanceAutoCompleteOrigin()
+        instanceAutocompleteDestination()
+        onCameraMove()
+    }
+
+    private fun onCameraMove() {
+        mCameraListener = OnCameraIdleListener {
+            try {
+                val geocoder = Geocoder(requireActivity().applicationContext)
+                mOriginLatLng = mMap.cameraPosition.target
+                val addressList = geocoder.getFromLocation(mOriginLatLng.latitude, mOriginLatLng.longitude, 1)
+                Log.d("__tag", "$addressList")
+                Log.d("__tag", "$ ${Geocoder.isPresent()}")
+                val city = addressList[0].locality
+                val country = addressList[0].countryName
+                val address = addressList[0].getAddressLine(0)
+                mOrigin = "$address $city"
+                //mAutocomplete.setText("$address $city")
+            } catch (e: java.lang.Exception) {
+                Log.d("Error: ", "Mensaje error: " + e.message)
+            }
+        }
+    }
+
+    private fun instanceAutoCompleteOrigin(){
+        mAutoCompleteOrigin = childFragmentManager.findFragmentById(R.id.placesAutoCompleteOrigin) as AutocompleteSupportFragment
+       mAutoCompleteOrigin.apply {
+            setPlaceFields(listOf(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME))
+           setHint("Origen")
+           setOnPlaceSelectedListener(object : PlaceSelectionListener{
+                override fun onPlaceSelected(place: Place) {
+                    mOrigin = place.name
+                    mOriginLatLng = place.latLng
+                    Log.d("PLACE", "Name: $mOrigin")
+                    Log.d("PLACE", "Lat: " + mOriginLatLng.latitude)
+                    Log.d("PLACE", "Lng: " + mOriginLatLng.longitude)
+                }
+
+                override fun onError(p0: Status) {
+                    Log.d("__tag error", p0.toString())
+                }
+            })
+        }
+    }
+
+    private fun instanceAutocompleteDestination(){
+        mAutoCompleteDestination = childFragmentManager.findFragmentById(R.id.placeAutocompleteDestination) as AutocompleteSupportFragment
+        mAutoCompleteDestination.apply {
+            setPlaceFields(listOf(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME))
+            setHint("Destino")
+            setOnPlaceSelectedListener(object : PlaceSelectionListener{
+                override fun onPlaceSelected(place: Place) {
+                    mDestination = place.name
+                    mDestinationLatLng = place.latLng
+                    Log.d("PLACE", "Name: $mDestination")
+                    Log.d("PLACE", "Lat: " + mDestinationLatLng.latitude)
+                    Log.d("PLACE", "Lng: " + mDestinationLatLng.longitude)
+                }
+
+                override fun onError(place: Status) {
+                    Log.d("__tag error", place.toString())
+                }
+            })
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -83,8 +174,10 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
 
             mMap.apply {
                 mapType = GoogleMap.MAP_TYPE_NORMAL
-                uiSettings.isZoomControlsEnabled = true
-                setOnMarkerClickListener(this@MapClientFragment)
+                //uiSettings.isZoomControlsEnabled = true
+                //isMyLocationEnabled
+                //setOnMarkerClickListener(this@MapClientFragment)
+                setOnCameraIdleListener(mCameraListener)
             }
 
             startConnection()
@@ -111,11 +204,10 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
                 for(location in locationResult.locations){
                     if(context != null){
                         mCurrentLatLng = LatLng(location.latitude, location.longitude)
-                        createMarket()
+                        //createMarket()
                         moveCamera()
 
                         if(mIsFirstTime){
-                            Log.d("__tag","entro fisttime")
                             mIsFirstTime = false
                             getActivityDrivers()
                             limitSearch()
@@ -124,13 +216,6 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
                 }
             }
         }
-    }
-
-    private fun createMarket(){
-        mMarker?.remove()
-        mMarker = mMap.addMarker(
-            MarkerOptions().position(mCurrentLatLng).title("Conductor disponible")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_my_location)))
     }
 
     private fun moveCamera(){
@@ -159,13 +244,12 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
                         MarkerOptions().position(driverLatLng).title("Conductor disponible")
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.vehicles))
                     )
-                    marker.tag = key
+                    marker!!.tag = key
                     mDriversMarkers.add(marker)
                 }
 
                 //Eliminamos los marcadores de los conductores que se desconectan
                 override fun onKeyExited(key: String) {
-                    Log.d("__tag keyexit","$key")
                     for (marker in mDriversMarkers) {
                         if (marker.tag != null) {
                             if (marker.tag == key) {
@@ -180,7 +264,6 @@ class MapClientFragment : BaseHomeFragment(), OnMapReadyCallback, GoogleMap.OnMa
                 //Actualizaremos los marcadores cuando se mueva
                 override fun onKeyMoved(key: String, location: GeoLocation) {
                     // ACTUALIZAR LA POSICION DE CADA CONDUCTOR
-                    Log.d("__tag keymoved","$key $location")
                     for (marker in mDriversMarkers) {
                         if (marker.tag != null) {
                             if (marker.tag == key) {

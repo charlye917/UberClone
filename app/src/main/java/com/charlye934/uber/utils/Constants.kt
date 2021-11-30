@@ -2,7 +2,7 @@ package com.charlye934.uber.utils
 
 object Constants {
     const val DRIVER = "DRIVER"
-    const val USER = "USERS"
+    const val USER = "USER"
 
 
     const val ALERT_PERMISSION = 1
